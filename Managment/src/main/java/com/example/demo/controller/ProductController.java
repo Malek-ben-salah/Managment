@@ -66,9 +66,9 @@ public class ProductController {
 	public ResponseEntity<List<Integer>> searchByProductQuantity(@PathVariable int quantity) {
 		return ResponseEntity.ok().body(productService.searchByProductQuantity(quantity));
 	}
-	
+
 	@DeleteMapping
-	public ResponseEntity<List<DeleteResponse>> deleteMultipeProducts(@RequestBody List<Long> ids){
+	public ResponseEntity<List<DeleteResponse>> deleteMultipeProducts(@RequestBody List<Long> ids) {
 		return ResponseEntity.ok().body(productService.deleteMultipeProducts(ids));
 	}
 }
