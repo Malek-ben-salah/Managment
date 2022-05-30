@@ -15,13 +15,13 @@ public interface ReservationService {
 	Reservation updateReservation(Reservation reservation);
 
 	// get all reservations
-	TablesResponse getAllReservations();
+	TablesResponse getAllReservations(int page);
 
 	// delete reservation
 	boolean deleteReservation(Long id);
 
 	// delete multipe reservation
-	DeleteResponse deleteMultipeReservation(List<Long> ids);
+	List<DeleteResponse> deleteMultipeReservation(List<Long> ids);
 
 	// search names of reservations
 	List<String> searchReservationsByName(String name);

@@ -6,9 +6,9 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.stereotype.Service;
-
 import com.example.demo.Response.DeleteResponse;
 import com.example.demo.Response.TablesResponse;
 import com.example.demo.model.Reservation;
@@ -34,14 +34,14 @@ public class ReservationServiceImpl implements ReservationService {
 	}
 
 	@Override
-	public TablesResponse getAllReservations() {
+	public TablesResponse getAllReservations(int page) {
 		System.out.println("*** getting all reservations ***");
 		TablesResponse res=new TablesResponse();
 		List<String> columnsName=new ArrayList<>();
 		res.setTitle("List of reservations");
 		columnsName.add("reservation name");
 		res.setColmuns(columnsName);
-		res.setData(reservationRepository.findAll());
+		res.setData(reservationRepository.findAll(PageRequest.of(0, page)).toList());
 		return res;
 	}
 
@@ -53,19 +53,39 @@ public class ReservationServiceImpl implements ReservationService {
 	}
 
 	@Override
-	public DeleteResponse deleteMultipeReservation(List<Long> ids) {
+	public List<DeleteResponse> deleteMultipeReservation(List<Long> ids) {
 		System.out.println("delete multipe reservations : "+ids);
-		DeleteResponse deleteResponse=new DeleteResponse();
+		List<DeleteResponse> deleteResponses = new ArrayList<DeleteResponse>();
+		List<Long> inexistantIds = new ArrayList<Long>();
+		List<Reservation> reservations = reservationRepository.findAllById(ids);
+		List<Long> existantId = new ArrayList<Long>();
+		reservations.forEach(res -> {
+			existantId.add(res.getId());
+		});
 		try {
-			reservationRepository.deleteAllById(ids);
-			deleteResponse.setMessage("delete success");
-			deleteResponse.setColor("green");
-		} catch (EmptyResultDataAccessException e) {
+			if (ids == null || ids.isEmpty()) {
+				deleteResponses.add(new DeleteResponse("delete failed ! ", "error"));
+				System.out.println("array of ids is null or empty ! ");
+			}
+		} catch (HttpMessageNotReadableException e) {
 			System.out.println(e.getMessage());
-			deleteResponse.setMessage("delete failed ! ");
-			deleteResponse.setColor("red");
 		}
-		return deleteResponse;
+
+		if (reservations.size() < ids.size()) {
+			for (Long id : ids) {
+				if (!existantId.contains(id)) {
+					inexistantIds.add(id);
+				}
+			}
+
+			deleteResponses.add(new DeleteResponse("delete failed for those users ids: " + inexistantIds, "error"));
+		}
+		if (!reservations.isEmpty()) {
+			deleteResponses.add(new DeleteResponse("delete success", "success"));
+			System.out.println(reservationRepository.findAllById(ids));
+			reservationRepository.deleteAllInBatch(reservations);
+		}
+		return deleteResponses;
 	}
 
 	@Override

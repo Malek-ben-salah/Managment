@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.Response.DeleteResponse;
 import com.example.demo.Response.TablesResponse;
 import com.example.demo.model.Product;
 import com.example.demo.service.ProductService;
@@ -36,9 +37,9 @@ public class ProductController {
 		return ResponseEntity.ok().body(productService.updateProduct(product));
 	}
 
-	@GetMapping
-	public ResponseEntity<TablesResponse> getAllProducts() {
-		return ResponseEntity.ok().body(productService.getAllProducts());
+	@GetMapping(value = "/page/{page}")
+	public ResponseEntity<TablesResponse> getAllProducts(@PathVariable int page) {
+		return ResponseEntity.ok().body(productService.getAllProducts(page));
 	}
 
 	@GetMapping(value = "/{id}")
@@ -57,12 +58,17 @@ public class ProductController {
 	}
 
 	@GetMapping(value = "/searchprice/{price}")
-	public ResponseEntity<List<Float>> searchByProductPrice(@PathVariable float price) {
+	public ResponseEntity<List<Double>> searchByProductPrice(@PathVariable double price) {
 		return ResponseEntity.ok().body(productService.searchByProductPrice(price));
 	}
 
 	@GetMapping(value = "/searchquantity/{quantity}")
-	public ResponseEntity<List<?>> searchByProductQuantity(@PathVariable int quantity) {
+	public ResponseEntity<List<Integer>> searchByProductQuantity(@PathVariable int quantity) {
 		return ResponseEntity.ok().body(productService.searchByProductQuantity(quantity));
+	}
+	
+	@DeleteMapping
+	public ResponseEntity<List<DeleteResponse>> deleteMultipeProducts(@RequestBody List<Long> ids){
+		return ResponseEntity.ok().body(productService.deleteMultipeProducts(ids));
 	}
 }

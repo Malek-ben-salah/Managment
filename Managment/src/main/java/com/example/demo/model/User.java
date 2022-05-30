@@ -37,12 +37,11 @@ public class User {
 		super();
 	}
 
-	public User(String name, String email, String password, List<Role> roles) {
+	public User(String name, String email, String password) {
 		super();
 		this.name = name;
 		this.email = email;
 		this.password = password;
-		this.roles = roles;
 	}
 
 	public Long getId() {

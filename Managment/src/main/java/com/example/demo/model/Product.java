@@ -13,14 +13,14 @@ public class Product {
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String productName;
-	private float price;
+	private double price;
 	private int quantity;
 
 	public Product() {
 		super();
 	}
 
-	public Product(String productName, float price, int quantity) {
+	public Product(String productName, double price, int quantity) {
 		super();
 		this.productName = productName;
 		this.price = price;
@@ -39,11 +39,11 @@ public class Product {
 		this.productName = productName;
 	}
 
-	public float getPrice() {
+	public double getPrice() {
 		return price;
 	}
 
-	public void setPrice(float price) {
+	public void setPrice(double price) {
 		this.price = price;
 	}
 

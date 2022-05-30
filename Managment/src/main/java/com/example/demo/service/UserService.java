@@ -18,7 +18,7 @@ public interface UserService {
 	boolean deleteUser(Long id);
 
 	// get all the users
-	TablesResponse getAllUsers();
+	TablesResponse getAllUsers(int page);
 
 	// get user by id
 	User getUserById(Long id);

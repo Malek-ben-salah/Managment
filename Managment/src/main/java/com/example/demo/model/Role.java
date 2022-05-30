@@ -13,8 +13,8 @@ public class Role {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long Id;
-	@Column(nullable = false)
-	private String Name;
+	@Column(nullable = false ,unique = true)
+	private String name;
 
 	public Role() {
 		super();
@@ -22,7 +22,7 @@ public class Role {
 
 	public Role(String name) {
 		super();
-		Name = name;
+		this.name = name;
 	}
 
 	public Long getId() {
@@ -30,16 +30,16 @@ public class Role {
 	}
 
 	public String getName() {
-		return Name;
+		return name;
 	}
 
 	public void setName(String name) {
-		Name = name;
+		this.name = name;
 	}
 
 	@Override
 	public String toString() {
-		return "Role [Id=" + Id + ", Name=" + Name + "]";
+		return "Role [Id=" + Id + ", Name=" + name + "]";
 	}
 
 }

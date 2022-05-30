@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.Response.DeleteResponse;
 import com.example.demo.Response.TablesResponse;
 import com.example.demo.model.Reservation;
 import com.example.demo.service.ReservationService;
@@ -36,9 +37,9 @@ public class ReservationController {
 		return ResponseEntity.ok().body(reservationService.updateReservation(reservation));
 	}
 	
-	@GetMapping
-	public ResponseEntity<TablesResponse> getAllReservations() {
-		return ResponseEntity.ok().body(reservationService.getAllReservations());
+	@GetMapping(value = "/page/{page}")
+	public ResponseEntity<TablesResponse> getAllReservations(@PathVariable int page) {
+		return ResponseEntity.ok().body(reservationService.getAllReservations(page));
 	}
 
 	@DeleteMapping("/{id}")
@@ -50,4 +51,10 @@ public class ReservationController {
 	public ResponseEntity<List<String>> searchReservationsByName(@PathVariable String name){
 		return ResponseEntity.ok().body(reservationService.searchReservationsByName(name));
 	}
+	
+	@DeleteMapping
+	public ResponseEntity<List<DeleteResponse>> deleteMultipeReservations(@RequestBody List<Long> ids){
+		return ResponseEntity.ok().body(reservationService.deleteMultipeReservation(ids));
+	}
+	
 }

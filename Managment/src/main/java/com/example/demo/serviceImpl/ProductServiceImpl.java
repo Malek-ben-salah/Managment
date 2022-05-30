@@ -6,7 +6,8 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.Response.DeleteResponse;
@@ -42,7 +43,7 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public TablesResponse getAllProducts() {
+	public TablesResponse getAllProducts(int page) {
 		System.out.println("getting all products ... ");
 		TablesResponse res = new TablesResponse();
 		List<String> columnsName = new ArrayList<>();
@@ -51,7 +52,7 @@ public class ProductServiceImpl implements ProductService {
 		columnsName.add("price");
 		columnsName.add("quantity");
 		res.setColmuns(columnsName);
-		res.setData(productRepository.findAll());
+		res.setData(productRepository.findAll(PageRequest.of(0, page)).toList());
 		return res;
 	}
 
@@ -62,19 +63,40 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public DeleteResponse deleteMultipeProducts(List<Long> ids) {
+	public List<DeleteResponse> deleteMultipeProducts(List<Long> ids) {
 		System.out.println("delete multipe products : " + ids);
-		DeleteResponse deleteResponse = new DeleteResponse();
+		List<DeleteResponse> deleteResponses = new ArrayList<DeleteResponse>();
+		List<Long> inexistantIds = new ArrayList<Long>();
+		List<Product> products = productRepository.findAllById(ids);
+		List<Long> existantId = new ArrayList<Long>();
+		products.forEach(prod -> {
+			existantId.add(prod.getId());
+		});
 		try {
-			productRepository.deleteAllById(ids);
-			deleteResponse.setMessage("delete success");
-			deleteResponse.setColor("green");
-		} catch (EmptyResultDataAccessException e) {
+			if (ids == null || ids.isEmpty()) {
+				deleteResponses.add(new DeleteResponse("delete failed ! ", "error"));
+				System.out.println("array of ids is null or empty ! ");
+			}
+		} catch (HttpMessageNotReadableException e) {
 			System.out.println(e.getMessage());
-			deleteResponse.setMessage("delete failed ! ");
-			deleteResponse.setColor("red");
 		}
-		return deleteResponse;
+
+		if (products.size() < ids.size()) {
+			for (Long id : ids) {
+				if (!existantId.contains(id)) {
+					inexistantIds.add(id);
+				}
+			}
+
+			deleteResponses.add(new DeleteResponse("delete failed for those users ids: " + inexistantIds, "error"));
+		}
+		if (!products.isEmpty()) {
+			deleteResponses.add(new DeleteResponse("delete success", "success"));
+			System.out.println(productRepository.findAllById(ids));
+			productRepository.deleteAllInBatch(products);
+		}
+		return deleteResponses;
+
 	}
 
 	@Override
@@ -84,7 +106,7 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public List<Float> searchByProductPrice(float price) {
+	public List<Double> searchByProductPrice(double price) {
 		System.out.println("search by product price: " + price);
 		return productRepository.searchByProductPrice(price);
 	}

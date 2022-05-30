@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -60,7 +61,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	}
 
 	@Override
-	public TablesResponse getAllUsers() {
+	public TablesResponse getAllUsers(int page) {
 		System.out.println("getting all users ...");
 		TablesResponse res = new TablesResponse();
 		List<String> columnsName = new ArrayList<>();
@@ -70,7 +71,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		columnsName.add("roles");
 		res.setTitle("List of Users");
 		res.setColmuns(columnsName);
-		res.setData(userRepository.findAll());
+		res.setData(userRepository.findAll(PageRequest.of(0, page)).toList());
 		return res;
 	}
 
@@ -110,7 +111,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		});
 		try {
 			if (ids == null || ids.isEmpty()) {
-				deleteResponses.add(new DeleteResponse("delete failed ! ", "red"));
+				deleteResponses.add(new DeleteResponse("delete failed ! ", "error"));
 				System.out.println("array of ids is null or empty ! ");
 			}
 		} catch (HttpMessageNotReadableException e) {
@@ -124,10 +125,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 				}
 			}
 
-			deleteResponses.add(new DeleteResponse("delete failed for those users ids: " + inexistantIds, "red"));
+			deleteResponses.add(new DeleteResponse("delete failed for those users ids: " + inexistantIds, "error"));
 		}
 		if (!users.isEmpty()) {
-			deleteResponses.add(new DeleteResponse("delete success", "green"));
+			deleteResponses.add(new DeleteResponse("delete success", "success"));
 			System.out.println(userRepository.findAllById(ids));
 			userRepository.deleteAllInBatch(users);
 		}
