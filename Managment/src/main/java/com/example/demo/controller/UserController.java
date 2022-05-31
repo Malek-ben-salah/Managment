@@ -33,7 +33,7 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
-	
+
 	@PostMapping
 	public ResponseEntity<User> addUser(@RequestBody User user) {
 		return ResponseEntity.ok().body(userService.addUser(user));
@@ -68,25 +68,26 @@ public class UserController {
 	public ResponseEntity<List<DeleteResponse>> deleteMultipeUsers(@RequestBody List<Long> ids) {
 		return ResponseEntity.ok().body(userService.deleteMultipeUsers(ids));
 	}
-	
+
 	@GetMapping(value = "/searchname/{name}")
-	public ResponseEntity<List<String>> searchByNames(@PathVariable String name){
+	public ResponseEntity<List<String>> searchByNames(@PathVariable String name) {
 		return ResponseEntity.ok().body(userService.searchByNames(name));
 	}
-	
+
 	@GetMapping(value = "/searchemail/{email}")
-	public ResponseEntity<List<String>> searchByEmails(@PathVariable String email){
+	public ResponseEntity<List<String>> searchByEmails(@PathVariable String email) {
 		return ResponseEntity.ok().body(userService.searchByEmails(email));
 	}
-	
+
 	@GetMapping(value = "/export/pdf/")
-	public void exportPdf(@RequestBody List<Long> ids , HttpServletResponse response) throws DocumentException, IOException {
+	public void exportPdf(@RequestBody List<Long> ids, HttpServletResponse response)
+			throws DocumentException, IOException {
 		response.setContentType("application/pdf");
-        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
-        String currentDateTime = dateFormatter.format(new Date());
-        String headerKey = "Content-Disposition";
-        String headerValue = "attachment; filename=users_" + currentDateTime + ".pdf";
-        response.setHeader(headerKey, headerValue);
-        userService.export(response, ids);
+		DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+		String currentDateTime = dateFormatter.format(new Date());
+		String headerKey = "Content-Disposition";
+		String headerValue = "attachment; filename=users_" + currentDateTime + ".pdf";
+		response.setHeader(headerKey, headerValue);
+		userService.export(response, ids);
 	}
 }
