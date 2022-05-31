@@ -1,9 +1,12 @@
 package com.example.demo.serviceImpl;
 
+import java.awt.Color;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -22,6 +25,16 @@ import com.example.demo.exception.EmailNotFound;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
+import com.lowagie.text.Document;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.Font;
+import com.lowagie.text.FontFactory;
+import com.lowagie.text.PageSize;
+import com.lowagie.text.Paragraph;
+import com.lowagie.text.Phrase;
+import com.lowagie.text.pdf.PdfPCell;
+import com.lowagie.text.pdf.PdfPTable;
+import com.lowagie.text.pdf.PdfWriter;
 
 @Service
 @Transactional
@@ -145,6 +158,59 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	public List<String> searchByEmails(String email) {
 		System.out.println("search by email: " + email);
 		return userRepository.searchByEmail(email);
+	}
+
+	@Override
+	public void writeTableHeader(PdfPTable table) {
+		PdfPCell cell = new PdfPCell();
+		cell.setBackgroundColor(Color.BLUE);
+		cell.setPadding(5);
+		Font font = FontFactory.getFont(FontFactory.HELVETICA);
+		font.setColor(Color.WHITE);
+		cell.setPhrase(new Phrase("user_id", font));
+		table.addCell(cell);
+		cell.setPhrase(new Phrase("name", font));
+		table.addCell(cell);
+		cell.setPhrase(new Phrase("email", font));
+		table.addCell(cell);
+		cell.setPhrase(new Phrase("password", font));
+		table.addCell(cell);
+		cell.setPhrase(new Phrase("roles", font));
+		table.addCell(cell);
+	}
+
+	@Override
+	public void writeTableData(PdfPTable table, List<Long> dataId) {
+		List<User> listUsers = userRepository.findAllById(dataId);
+		for (User user : listUsers) {
+			table.addCell(user.getId().toString());
+			table.addCell(user.getName());
+			table.addCell(user.getEmail());
+			table.addCell(user.getPassword());
+			table.addCell(user.getRoles().toString());
+		}
+	}
+
+	@Override
+	public void export(HttpServletResponse response, List<Long> dataId) throws DocumentException, IOException {
+		Document document = new Document(PageSize.A4);
+		PdfWriter.getInstance(document, response.getOutputStream());
+		document.open();
+		Font font = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
+		font.setSize(18);
+		font.setColor(Color.BLUE);
+		Paragraph p = new Paragraph("List of Users", font);
+		p.setAlignment(Paragraph.ALIGN_CENTER);
+		document.add(p);
+		PdfPTable table = new PdfPTable(5);
+		table.setWidthPercentage(100f);
+		table.setWidths(new float[] { 1.5f, 2.0f, 3.0f, 4.5f, 2.5f });
+		table.setSpacingBefore(10);
+		writeTableHeader(table);
+		writeTableData(table, dataId);
+		document.add(table);
+		document.close();
+		
 	}
 
 }

@@ -1,6 +1,12 @@
 package com.example.demo.controller;
 
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +24,7 @@ import com.example.demo.Response.DeleteResponse;
 import com.example.demo.Response.TablesResponse;
 import com.example.demo.model.Product;
 import com.example.demo.service.ProductService;
+import com.lowagie.text.DocumentException;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -70,5 +77,16 @@ public class ProductController {
 	@DeleteMapping
 	public ResponseEntity<List<DeleteResponse>> deleteMultipeProducts(@RequestBody List<Long> ids) {
 		return ResponseEntity.ok().body(productService.deleteMultipeProducts(ids));
+	}
+	
+	@GetMapping(value = "/export/pdf/")
+	public void exportPdf(@RequestBody List<Long> ids , HttpServletResponse response) throws DocumentException, IOException {
+		response.setContentType("application/pdf");
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateTime = dateFormatter.format(new Date());
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=products_" + currentDateTime + ".pdf";
+        response.setHeader(headerKey, headerValue);
+        productService.export(response, ids);
 	}
 }
