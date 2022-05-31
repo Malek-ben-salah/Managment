@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.stereotype.Service;
 import com.example.demo.Response.DeleteResponse;
@@ -47,7 +46,7 @@ public class ReservationServiceImpl implements ReservationService {
 	}
 
 	@Override
-	public TablesResponse getAllReservations(int page) {
+	public TablesResponse getAllReservations() {
 		System.out.println("*** getting all reservations ***");
 		TablesResponse res=new TablesResponse();
 		List<String> columnsName=new ArrayList<>();
@@ -55,7 +54,7 @@ public class ReservationServiceImpl implements ReservationService {
 		columnsName.add("id");
 		columnsName.add("reservation name");
 		res.setColmuns(columnsName);
-		res.setData(reservationRepository.findAll(PageRequest.of(0, page)).toList());
+		res.setData(reservationRepository.findAll());
 		return res;
 	}
 

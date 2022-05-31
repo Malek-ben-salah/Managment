@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.stereotype.Service;
 
@@ -56,7 +55,7 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public TablesResponse getAllProducts(int page) {
+	public TablesResponse getAllProducts() {
 		System.out.println("getting all products ... ");
 		TablesResponse res = new TablesResponse();
 		List<String> columnsName = new ArrayList<>();
@@ -66,7 +65,7 @@ public class ProductServiceImpl implements ProductService {
 		columnsName.add("price");
 		columnsName.add("quantity");
 		res.setColmuns(columnsName);
-		res.setData(productRepository.findAll(PageRequest.of(0, page)).toList());
+		res.setData(productRepository.findAll());
 		return res;
 	}
 
@@ -172,7 +171,7 @@ public class ProductServiceImpl implements ProductService {
 		document.add(p);
 		PdfPTable table = new PdfPTable(4);
 		table.setWidthPercentage(100f);
-		table.setWidths(new float[] { 1.5f, 2.0f, 3.0f, 4.5f });
+		table.setWidths(new float[] { 1.0f, 3.0f, 3.0f, 3.0f });
 		table.setSpacingBefore(10);
 		writeTableHeader(table);
 		writeTableData(table, dataId);

@@ -23,7 +23,7 @@ public interface ProductService {
 	boolean deleteProduct(Long id);
 
 	// get all the products
-	TablesResponse getAllProducts(int page);
+	TablesResponse getAllProducts();
 
 	// get product by id
 	Product getProductById(Long id);

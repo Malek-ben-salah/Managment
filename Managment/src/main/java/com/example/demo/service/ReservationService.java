@@ -20,7 +20,7 @@ public interface ReservationService {
 	Reservation updateReservation(Reservation reservation);
 
 	// get all reservations
-	TablesResponse getAllReservations(int page);
+	TablesResponse getAllReservations();
 
 	// delete reservation
 	boolean deleteReservation(Long id);

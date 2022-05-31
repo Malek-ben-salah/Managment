@@ -44,9 +44,9 @@ public class ReservationController {
 		return ResponseEntity.ok().body(reservationService.updateReservation(reservation));
 	}
 	
-	@GetMapping(value = "/page/{page}")
-	public ResponseEntity<TablesResponse> getAllReservations(@PathVariable int page) {
-		return ResponseEntity.ok().body(reservationService.getAllReservations(page));
+	@GetMapping
+	public ResponseEntity<TablesResponse> getAllReservations() {
+		return ResponseEntity.ok().body(reservationService.getAllReservations());
 	}
 
 	@DeleteMapping("/{id}")

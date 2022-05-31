@@ -9,7 +9,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -48,6 +47,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	@Override
 	public User addUser(User user) {
 		System.out.println("adding user : " + user.getName());
+		//test if this email exist for another user 
 		User userEmail = userRepository.findByEmail(user.getEmail()).orElse(null);
 		if (userEmail != null) {
 			throw new AlreadyExistException("this email : " + user.getEmail() + " is already exist try another one");
@@ -55,6 +55,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		if (!(user.getEmail().contains("@"))) {
 			throw new EmailFormatException("form of this email is wrong");
 		}
+		//encode password
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		return userRepository.save(user);
 	}
@@ -74,17 +75,20 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	}
 
 	@Override
-	public TablesResponse getAllUsers(int page) {
+	public TablesResponse getAllUsers() {
 		System.out.println("getting all users ...");
 		TablesResponse res = new TablesResponse();
+		// list of columns name 
 		List<String> columnsName = new ArrayList<>();
+		columnsName.add("id");
 		columnsName.add("name");
 		columnsName.add("email");
 		columnsName.add("password");
 		columnsName.add("roles");
 		res.setTitle("List of Users");
 		res.setColmuns(columnsName);
-		res.setData(userRepository.findAll(PageRequest.of(0, page)).toList());
+		// list of users
+		res.setData(userRepository.findAll());
 		return res;
 	}
 
@@ -115,7 +119,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	@Override
 	public List<DeleteResponse> deleteMultipeUsers(List<Long> ids) {
 		System.out.println("delete multipe users : " + ids);
-		List<DeleteResponse> deleteResponses = new ArrayList<DeleteResponse>();
+		List<DeleteResponse> deleteResponses = new ArrayList<DeleteResponse>();	
 		List<Long> inexistantIds = new ArrayList<Long>();
 		List<User> users = userRepository.findAllById(ids);
 		List<Long> existantId = new ArrayList<Long>();
@@ -204,7 +208,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		document.add(p);
 		PdfPTable table = new PdfPTable(5);
 		table.setWidthPercentage(100f);
-		table.setWidths(new float[] { 1.5f, 2.0f, 3.0f, 4.5f, 2.5f });
+		table.setWidths(new float[] { 1.0f, 1.5f, 3.5f, 5.0f, 3.5f });
 		table.setSpacingBefore(10);
 		writeTableHeader(table);
 		writeTableData(table, dataId);

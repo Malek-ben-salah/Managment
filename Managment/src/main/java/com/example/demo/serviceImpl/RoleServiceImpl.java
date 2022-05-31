@@ -55,6 +55,7 @@ public class RoleServiceImpl implements RoleService {
 
 	@Override
 	public void addRoleToUser(String email, String roleName) {
+		System.out.println("add role : "+roleName+" to user with email: "+email);
 		User user = userRepository.findByEmail(email).orElseThrow(() -> new EmailNotFound("email not found"));
 		Role role = roleRepository.findByName(roleName);
 		user.getRoles().add(role);

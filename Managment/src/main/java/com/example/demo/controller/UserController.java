@@ -44,9 +44,9 @@ public class UserController {
 		return ResponseEntity.ok().body(userService.updateUser(user));
 	}
 
-	@GetMapping(value = "/page/{page}")
-	public ResponseEntity<TablesResponse> getAllUsers(@PathVariable int page) {
-		return ResponseEntity.ok().body(userService.getAllUsers(page));
+	@GetMapping
+	public ResponseEntity<TablesResponse> getAllUsers() {
+		return ResponseEntity.ok().body(userService.getAllUsers());
 	}
 
 	@GetMapping(value = "/email/{email}")

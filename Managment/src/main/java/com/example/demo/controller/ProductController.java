@@ -44,9 +44,9 @@ public class ProductController {
 		return ResponseEntity.ok().body(productService.updateProduct(product));
 	}
 
-	@GetMapping(value = "/page/{page}")
-	public ResponseEntity<TablesResponse> getAllProducts(@PathVariable int page) {
-		return ResponseEntity.ok().body(productService.getAllProducts(page));
+	@GetMapping
+	public ResponseEntity<TablesResponse> getAllProducts() {
+		return ResponseEntity.ok().body(productService.getAllProducts());
 	}
 
 	@GetMapping(value = "/{id}")
