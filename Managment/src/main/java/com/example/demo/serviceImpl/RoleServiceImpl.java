@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.exception.AlreadyExistException;
 import com.example.demo.exception.EmailNotFound;
 import com.example.demo.model.Role;
 import com.example.demo.model.User;
@@ -26,6 +27,10 @@ public class RoleServiceImpl implements RoleService {
 	@Override
 	public Role addRole(Role role) {
 		System.out.println("adding role: " + role.getName());
+		Role roleByname=roleRepository.findByName(role.getName());
+		if(roleByname != null) {
+			throw new AlreadyExistException("role already exist !");
+		}
 		return roleRepository.save(role);
 	}
 
