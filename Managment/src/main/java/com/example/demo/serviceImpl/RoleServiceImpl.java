@@ -53,7 +53,7 @@ public class RoleServiceImpl implements RoleService {
 	}
 
 	@Override
-	public List<String> searchRolesByName(String roleName) {
+	public List<Role> searchRolesByName(String roleName) {
 		System.out.println("search roles by name: " + roleName);
 		return roleRepository.searchRoleByNames(roleName);
 	}

@@ -10,6 +10,6 @@ import com.example.demo.model.Reservation;
 
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
 
-	@Query("select R.name from Reservation R where R.name like :name%")
-	List<String> searchReservationByName(@Param("name") String name);
+	@Query("select R from Reservation R where R.name like :name%")
+	List<Reservation> searchReservationByName(@Param("name") String name);
 }

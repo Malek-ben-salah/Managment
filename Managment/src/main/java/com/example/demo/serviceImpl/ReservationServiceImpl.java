@@ -102,7 +102,7 @@ public class ReservationServiceImpl implements ReservationService {
 	}
 
 	@Override
-	public List<String> searchReservationsByName(String name) {
+	public List<Reservation> searchReservationsByName(String name) {
 		System.out.println("search reservations by name: "+name);
 		return reservationRepository.searchReservationByName(name);
 	}

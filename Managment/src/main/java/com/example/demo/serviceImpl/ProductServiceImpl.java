@@ -113,19 +113,19 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public List<String> searchByProductName(String productName) {
+	public List<Product> searchByProductName(String productName) {
 		System.out.println("search by product name: " + productName);
 		return productRepository.searchByProductName(productName);
 	}
 
 	@Override
-	public List<Double> searchByProductPrice(double price) {
+	public List<Product> searchByProductPrice(double price) {
 		System.out.println("search by product price: " + price);
 		return productRepository.searchByProductPrice(price);
 	}
 
 	@Override
-	public List<Integer> searchByProductQuantity(int quantity) {
+	public List<Product> searchByProductQuantity(int quantity) {
 		System.out.println("search by product quantity: " + quantity);
 		return productRepository.searchByProductQuantity(quantity);
 	}

@@ -60,17 +60,17 @@ public class ProductController {
 	}
 
 	@GetMapping(value = "/searchname/{name}")
-	public ResponseEntity<List<String>> searchByProductNames(@PathVariable String name) {
+	public ResponseEntity<List<Product>> searchByProductNames(@PathVariable String name) {
 		return ResponseEntity.ok().body(productService.searchByProductName(name));
 	}
 
 	@GetMapping(value = "/searchprice/{price}")
-	public ResponseEntity<List<Double>> searchByProductPrice(@PathVariable double price) {
+	public ResponseEntity<List<Product>> searchByProductPrice(@PathVariable double price) {
 		return ResponseEntity.ok().body(productService.searchByProductPrice(price));
 	}
 
 	@GetMapping(value = "/searchquantity/{quantity}")
-	public ResponseEntity<List<Integer>> searchByProductQuantity(@PathVariable int quantity) {
+	public ResponseEntity<List<Product>> searchByProductQuantity(@PathVariable int quantity) {
 		return ResponseEntity.ok().body(productService.searchByProductQuantity(quantity));
 	}
 

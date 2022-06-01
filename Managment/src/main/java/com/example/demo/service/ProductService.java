@@ -32,13 +32,13 @@ public interface ProductService {
 	List<DeleteResponse> deleteMultipeProducts(List<Long> ids);
 
 	// search by product name
-	List<String> searchByProductName(String productName);
+	List<Product> searchByProductName(String productName);
 
 	// search by product price
-	List<Double> searchByProductPrice(double price);
+	List<Product> searchByProductPrice(double price);
 
 	// search by product quantity
-	List<Integer> searchByProductQuantity(int quantity);
+	List<Product> searchByProductQuantity(int quantity);
 	
 	// create the header of table in pdf
 	void writeTableHeader(PdfPTable table);

@@ -10,15 +10,13 @@ import com.example.demo.model.Product;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-	@Query("select P.productName from Product P where P.productName like :name%")
-	List<String> searchByProductName(@Param("name") String productName);
+	@Query("select P from Product P where P.productName like :name%")
+	List<Product> searchByProductName(@Param("name") String productName);
 
-	@Query("select P.price from Product P where cast(P.price as string) like cast(:price as int) || '%' ")
-	List<Double> searchByProductPrice(@Param("price") double price);
+	@Query("select P from Product P where cast(P.price as string) like cast(:price as int) || '%' ")
+	List<Product> searchByProductPrice(@Param("price") double price);
 
-	// List<Product> findByPriceEndingWith(float price);
-
-	@Query("select P.quantity from Product P where cast(P.quantity as string) like :quantity || '%' ")
-	List<Integer> searchByProductQuantity(@Param("quantity") int quantity);
+	@Query("select P from Product P where cast(P.quantity as string) like :quantity || '%' ")
+	List<Product> searchByProductQuantity(@Param("quantity") int quantity);
 
 }

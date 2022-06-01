@@ -47,7 +47,7 @@ public class RoleController {
 	}
 
 	@GetMapping(value = "/name/{roleName}")
-	public ResponseEntity<List<String>> searchRolesByName(@PathVariable String roleName) {
+	public ResponseEntity<List<Role>> searchRolesByName(@PathVariable String roleName) {
 		return ResponseEntity.ok().body(roleService.searchRolesByName(roleName));
 	}
 	

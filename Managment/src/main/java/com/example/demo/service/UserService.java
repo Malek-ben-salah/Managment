@@ -35,10 +35,10 @@ public interface UserService {
 	List<DeleteResponse> deleteMultipeUsers(List<Long> ids);
 
 	// search by name
-	List<String> searchByNames(String name);
+	List<User> searchByNames(String name);
 
 	// search by email
-	List<String> searchByEmails(String email);
+	List<User> searchByEmails(String email);
 
 	// create the header of table in pdf
 	void writeTableHeader(PdfPTable table);

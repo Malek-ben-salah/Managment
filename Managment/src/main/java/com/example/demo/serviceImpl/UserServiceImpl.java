@@ -153,13 +153,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	}
 
 	@Override
-	public List<String> searchByNames(String name) {
+	public List<User> searchByNames(String name) {
 		System.out.println("search by name: " + name);
 		return userRepository.searchByName(name);
 	}
 
 	@Override
-	public List<String> searchByEmails(String email) {
+	public List<User> searchByEmails(String email) {
 		System.out.println("search by email: " + email);
 		return userRepository.searchByEmail(email);
 	}

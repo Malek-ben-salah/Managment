@@ -29,7 +29,7 @@ public interface ReservationService {
 	List<DeleteResponse> deleteMultipeReservation(List<Long> ids);
 
 	// search names of reservations
-	List<String> searchReservationsByName(String name);
+	List<Reservation> searchReservationsByName(String name);
 
 	// create the header of table in pdf
 	void writeTableHeader(PdfPTable table);

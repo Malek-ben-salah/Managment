@@ -55,7 +55,7 @@ public class ReservationController {
 	}
 	
 	@GetMapping(value = "/name/{name}")
-	public ResponseEntity<List<String>> searchReservationsByName(@PathVariable String name){
+	public ResponseEntity<List<Reservation>> searchReservationsByName(@PathVariable String name){
 		return ResponseEntity.ok().body(reservationService.searchReservationsByName(name));
 	}
 	

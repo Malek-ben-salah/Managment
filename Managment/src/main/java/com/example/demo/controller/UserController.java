@@ -70,12 +70,12 @@ public class UserController {
 	}
 
 	@GetMapping(value = "/searchname/{name}")
-	public ResponseEntity<List<String>> searchByNames(@PathVariable String name) {
+	public ResponseEntity<List<User>> searchByNames(@PathVariable String name) {
 		return ResponseEntity.ok().body(userService.searchByNames(name));
 	}
 
 	@GetMapping(value = "/searchemail/{email}")
-	public ResponseEntity<List<String>> searchByEmails(@PathVariable String email) {
+	public ResponseEntity<List<User>> searchByEmails(@PathVariable String email) {
 		return ResponseEntity.ok().body(userService.searchByEmails(email));
 	}
 

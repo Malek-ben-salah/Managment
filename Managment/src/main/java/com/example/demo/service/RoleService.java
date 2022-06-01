@@ -19,7 +19,7 @@ public interface RoleService {
 	void deleteRole(Long id);
 
 	// search roles by name
-	List<String> searchRolesByName(String roleName);
+	List<Role> searchRolesByName(String roleName);
 	
 	// add role to user
 	void addRoleToUser(String email,String roleName);

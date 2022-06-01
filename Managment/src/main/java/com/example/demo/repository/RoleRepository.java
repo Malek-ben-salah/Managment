@@ -10,8 +10,8 @@ import com.example.demo.model.Role;
 
 public interface RoleRepository extends JpaRepository<Role, Long> {
 
-	@Query("select R.name from Role R where R.name like :name%")
-	List<String> searchRoleByNames(@Param("name") String name);
+	@Query("select R from Role R where R.name like :name%")
+	List<Role> searchRoleByNames(@Param("name") String name);
 	
 	Role findByName(String name);
 }
