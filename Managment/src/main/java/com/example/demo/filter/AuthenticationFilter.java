@@ -10,8 +10,6 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.json.JSONObject;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -36,17 +34,9 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws AuthenticationException {
-		JSONObject json = new JSONObject();
-		String body = "";
-		try {
-			body = request.getReader().lines().collect(Collectors.joining());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		json = new JSONObject(body);
-		String email = json.getString("email");
-		String password = json.getString("password");
 
+		String email = request.getParameter("email");
+		String password = request.getParameter("password");
 		logger.info("email is: " + email);
 		logger.info("password is: " + password);
 		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email,

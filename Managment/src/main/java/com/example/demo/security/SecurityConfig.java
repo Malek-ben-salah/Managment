@@ -41,14 +41,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/login/**").permitAll();
 		
 		http.authorizeRequests().antMatchers(HttpMethod.OPTIONS, "/api/users/**").permitAll();
-		http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/users/**").hasAuthority("admin");
+		http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/users/**").permitAll();
 		http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/users/**").hasAuthority("admin");
 		http.authorizeRequests().antMatchers(HttpMethod.DELETE, "/api/users/**").hasAuthority("admin");
 		http.authorizeRequests().antMatchers(HttpMethod.PUT, "/api/users/**").hasAuthority("admin");
 
 		http.authorizeRequests().antMatchers(HttpMethod.OPTIONS, "/api/roles/**").permitAll();
 		http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/roles/**").hasAnyAuthority("admin","client");
-		http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/roles/**").hasAnyAuthority("admin","client");
+		http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/roles/**").permitAll();
 		http.authorizeRequests().antMatchers(HttpMethod.PUT, "/api/roles/**").hasAnyAuthority("admin","client");
 		http.authorizeRequests().antMatchers(HttpMethod.DELETE, "/api/roles/**").hasAnyAuthority("admin","client");
 
