@@ -79,7 +79,7 @@ public class ProductController {
 		return ResponseEntity.ok().body(productService.deleteMultipeProducts(ids));
 	}
 	
-	@GetMapping(value = "/export/pdf/")
+	@PostMapping(value = "/export/pdf/")
 	public void exportPdf(@RequestBody List<Long> ids , HttpServletResponse response) throws DocumentException, IOException {
 		response.setContentType("application/pdf");
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");

@@ -28,12 +28,12 @@ public class ManagmentApplication {
 		return args -> {
 
 			/*
-			   roleService.addRole(new Role("admin"));
-			   roleService.addRole(newRole("client"));
+			   roleService.addRole(new Role("Admin"));
+			   roleService.addRole(newRole("Client"));
 			   userService.addUser(newUser("mohamed","mohamed@gmail.com","mohamed"));
 			   productService.addProduct(newProduct("dell", 2300, 20));
 			   reservationService.addReservation(newReservation("reservation"));
-			   roleService.addRoleToUser("mohamed@gmail.com","admin");
+			   roleService.addRoleToUser("mohamed@gmail.com","Admin");
 			*/
 		};
 

@@ -79,7 +79,7 @@ public class UserController {
 		return ResponseEntity.ok().body(userService.searchByEmails(email));
 	}
 
-	@GetMapping(value = "/export/pdf/")
+	@PostMapping(value = "/export/pdf/")
 	public void exportPdf(@RequestBody List<Long> ids, HttpServletResponse response)
 			throws DocumentException, IOException {
 		response.setContentType("application/pdf");

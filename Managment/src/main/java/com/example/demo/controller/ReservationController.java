@@ -64,7 +64,7 @@ public class ReservationController {
 		return ResponseEntity.ok().body(reservationService.deleteMultipeReservation(ids));
 	}
 	
-	@GetMapping(value = "/export/pdf/{ids}")
+	@PostMapping(value = "/export/pdf/")
 	public void exportPdf(@RequestBody List<Long> ids , HttpServletResponse response) throws DocumentException, IOException {
 		response.setContentType("application/pdf");
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
