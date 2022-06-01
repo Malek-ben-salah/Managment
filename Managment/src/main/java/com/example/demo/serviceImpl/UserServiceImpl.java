@@ -108,7 +108,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User user = userRepository.findByEmail(username)
 				.orElseThrow(() -> new EmailNotFound("this email doesn't exist "));
-		System.out.println("email found in the database: << email >> ");
+		System.out.println("email found in the database: "+"<< "+ username +" >> ");
 		Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
 		user.getRoles().forEach(role -> {
 			authorities.add(new SimpleGrantedAuthority(role.getName()));
